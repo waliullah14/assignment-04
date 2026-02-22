@@ -10,11 +10,17 @@ let totalCards = document.getElementById("job-card-container").children.length;
 updateCounts();
 
 let allBtn = document.getElementById("all-btn");
-allBtn.addEventListener("click", toggleStyle("all-btn"));
+allBtn.addEventListener("click", function () {
+    toggleStyle("all-btn");
+});
 let interviewBtn = document.getElementById("interview-btn");
-interviewBtn.addEventListener("click", toggleStyle("interview-btn"));
+interviewBtn.addEventListener("click", function () {
+    toggleStyle("interview-btn");
+});
 let rejectBtn = document.getElementById("reject-btn");
-rejectBtn.addEventListener("click", toggleStyle("reject-btn"));
+rejectBtn.addEventListener("click", function () {
+    toggleStyle("reject-btn");
+});
 
 //functions
 function updateCounts() {
@@ -28,5 +34,6 @@ function toggleStyle(id) {
     interviewBtn.classList.remove("bg-[#3B82F6]", "text-white");
     rejectBtn.classList.remove("bg-[#3B82F6]", "text-white");
 
-    
+    let selected = document.getElementById(id);
+    selected.classList.add("bg-[#3B82F6]", "text-white");
 }
