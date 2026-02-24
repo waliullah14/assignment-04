@@ -1,5 +1,6 @@
 let interViewList = [];
 let rejectList = [];
+let currentFilter = "all-btn";
 
 const mainSection = document.querySelector("main");
 const filteredCardSection = document.getElementById("filtered-card");
@@ -16,6 +17,9 @@ function updateCounts() {
     rejectCount.innerText = rejectList.length;
 }
 
+updateCounts();
+document.getElementById("job-number").innerText = totalCards;
+
 let allBtn = document.getElementById("all-btn");
 allBtn.addEventListener("click", function () {
     toggleStyle("all-btn");
@@ -30,6 +34,7 @@ rejectBtn.addEventListener("click", function () {
 });
 
 function toggleStyle(id) {
+    currentFilter = id;
     allBtn.classList.remove("bg-[#3B82F6]", "text-white");
     interviewBtn.classList.remove("bg-[#3B82F6]", "text-white");
     rejectBtn.classList.remove("bg-[#3B82F6]", "text-white");
@@ -38,8 +43,37 @@ function toggleStyle(id) {
     selected.classList.add("bg-[#3B82F6]", "text-white");
 }
 
-mainSection.addEventListener("click", function (event) {
-    const cardBody = event.target.parentNode.parentNode;
+function updateMainCard(companyTitle, status) {
+    const allCards = document.querySelectorAll(
+        "#job-card-container .card-body",
+    );
+
+    for (let card of allCards) {
+        const title = card.querySelector(".company-title").innerText;
+
+        if (title === companyTitle) {
+            const interviewBadge = card.querySelector(".interview-badge");
+            const rejectedBadge = card.querySelector(".rejected-badge");
+            const notAppliedBadge = card.querySelector(".not-applied-badge");
+
+            if (status === "interview") {
+                interviewBadge.classList.remove("hidden");
+                rejectedBadge.classList.add("hidden");
+                notAppliedBadge.classList.add("hidden");
+            }
+
+            if (status === "rejected") {
+                rejectedBadge.classList.remove("hidden");
+                interviewBadge.classList.add("hidden");
+                notAppliedBadge.classList.add("hidden");
+            }
+        }
+    }
+}
+
+document.addEventListener("click", function (event) {
+    const cardBody = event.target.closest(".card-body");
+    if (!cardBody) return;
     const companyTitle = cardBody.querySelector(".company-title").innerText;
     const jobPosition = cardBody.querySelector(".job-position").innerText;
     const jobLocation = cardBody.querySelector(".job-location").innerText;
@@ -61,9 +95,26 @@ mainSection.addEventListener("click", function (event) {
             interViewList.push(cardData);
         }
 
-        cardBody.querySelector(".rejected-badge").classList.add("hidden");
-        cardBody.querySelector(".not-applied-badge").classList.add("hidden");
-        cardBody.querySelector(".interview-badge").classList.remove("hidden");
+        updateMainCard(cardData.companyTitle, "interview");
+
+        rejectList = rejectList.filter(
+            (item) => item.companyTitle !== cardData.companyTitle,
+        );
+
+        updateCounts();
+
+        if (currentFilter === "reject-list-btn") {
+            renderRejected();
+
+            if (rejectList.length === 0) {
+                filteredCardSection.classList.add("hidden");
+                document
+                    .getElementById("empty-list")
+                    .classList.remove("hidden");
+            }
+
+            document.getElementById("job-number").innerText = rejectList.length;
+        }
     }
 
     if (event.target.classList.contains("rejected-btn")) {
@@ -75,9 +126,40 @@ mainSection.addEventListener("click", function (event) {
             rejectList.push(cardData);
         }
 
-        cardBody.querySelector(".rejected-badge").classList.remove("hidden");
-        cardBody.querySelector(".not-applied-badge").classList.add("hidden");
-        cardBody.querySelector(".interview-badge").classList.add("hidden");
+        updateMainCard(cardData.companyTitle, "rejected");
+
+        interViewList = interViewList.filter(
+            (item) => item.companyTitle !== cardData.companyTitle,
+        );
+
+        updateCounts();
+
+        if (currentFilter === "interview-list-btn") {
+            renderInterview();
+
+            if (interViewList.length === 0) {
+                filteredCardSection.classList.add("hidden");
+                document
+                    .getElementById("empty-list")
+                    .classList.remove("hidden");
+            }
+
+            document.getElementById("job-number").innerText =
+                interViewList.length;
+        }
+
+        if (currentFilter === "reject-list-btn") {
+            renderRejected();
+
+            if (rejectList.length === 0) {
+                filteredCardSection.classList.add("hidden");
+                document
+                    .getElementById("empty-list")
+                    .classList.remove("hidden");
+            }
+
+            document.getElementById("job-number").innerText = rejectList.length;
+        }
     }
 
     updateCounts();
@@ -121,8 +203,8 @@ function renderInterview() {
                         </p>
                         <div class="badge-container flex py-5">
                             <div
-                                class="badge bg-[#F8FAFC] rounded-sm border-[#10B981] text-[#10B981]"
-                                id="interview-badge"
+                                class="interview-badge badge bg-[#F8FAFC] rounded-sm border-[#10B981] text-[#10B981]"
+
                             >
                                 Interview
                             </div>
@@ -132,14 +214,14 @@ function renderInterview() {
                         </p>
                         <div class="action mt-5">
                             <button
-                                class="btn font-semibold text-[14px] text-[#10B981] border-[#10B981] hover:bg-[#10B981] hover:text-white mr-2"
-                                id="interview-btn"
+                                class="interview-btn btn font-semibold text-[14px] text-[#10B981] border-[#10B981] hover:bg-[#10B981] hover:text-white mr-2"
+
                             >
                                 Interview
                             </button>
                             <button
-                                class="btn font-semibold text-[14px] text-[#EF4444] border-[#EF4444] hover:bg-[#EF4444] hover:text-white"
-                                id="rejected-btn"
+                                class="rejected-btn btn font-semibold text-[14px] text-[#EF4444] border-[#EF4444] hover:bg-[#EF4444] hover:text-white"
+
                             >
                                 Rejected
                             </button>
@@ -188,8 +270,8 @@ function renderRejected() {
                         </p>
                         <div class="badge-container flex py-5">
                             <div
-                                class="badge bg-[#F8FAFC] rounded-sm border-[#EF4444] text-[#EF4444]"
-                                id="rejected-badge"
+                                class="rejected-badge badge bg-[#F8FAFC] rounded-sm border-[#EF4444] text-[#EF4444]"
+
                             >
                                 Rejected
                             </div>
@@ -199,14 +281,14 @@ function renderRejected() {
                         </p>
                         <div class="action mt-5">
                             <button
-                                class="btn font-semibold text-[14px] text-[#10B981] border-[#10B981] hover:bg-[#10B981] hover:text-white mr-2"
-                                id="interview-btn"
+                                class="interview-btn btn font-semibold text-[14px] text-[#10B981] border-[#10B981] hover:bg-[#10B981] hover:text-white mr-2"
+
                             >
                                 Interview
                             </button>
                             <button
-                                class="btn font-semibold text-[14px] text-[#EF4444] border-[#EF4444] hover:bg-[#EF4444] hover:text-white"
-                                id="rejected-btn"
+                                class="rejected-btn btn font-semibold text-[14px] text-[#EF4444] border-[#EF4444] hover:bg-[#EF4444] hover:text-white"
+
                             >
                                 Rejected
                             </button>
@@ -217,16 +299,27 @@ function renderRejected() {
     }
 }
 
-//filter
 document.getElementById("all-btn").addEventListener("click", function () {
     filteredCardSection.classList.add("hidden");
     document.getElementById("empty-list").classList.add("hidden");
     document.querySelector("#job-card-container").classList.remove("hidden");
-    if (totalCount === 0) {
+
+    if (totalCards === 0) {
         filteredCardSection.classList.add("hidden");
         document.querySelector("#job-card-container").classList.add("hidden");
         document.getElementById("empty-list").classList.remove("hidden");
     }
+
+    for (let item of interViewList) {
+        updateMainCard(item.companyTitle, "interview");
+    }
+
+    for (let item of rejectList) {
+        updateMainCard(item.companyTitle, "rejected");
+    }
+
+    document.getElementById("job-number").innerText = totalCards;
+    updateCounts();
 });
 
 document
@@ -244,6 +337,9 @@ document
                 .classList.add("hidden");
             document.getElementById("empty-list").classList.remove("hidden");
         }
+
+        document.getElementById("job-number").innerText = interViewList.length;
+        updateCounts();
     });
 
 document
@@ -261,4 +357,7 @@ document
                 .classList.add("hidden");
             document.getElementById("empty-list").classList.remove("hidden");
         }
+        
+        document.getElementById("job-number").innerText = rejectList.length;
+        updateCounts();
     });
