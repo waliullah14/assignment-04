@@ -57,8 +57,6 @@ document.addEventListener("click", function (event) {
             (item) => item.companyTitle !== cardData.companyTitle,
         );
 
-        updateCounts();
-
         if (currentFilter === "reject-list-btn") {
             renderRejected();
 
@@ -88,8 +86,6 @@ document.addEventListener("click", function (event) {
             (item) => item.companyTitle !== cardData.companyTitle,
         );
 
-        updateCounts();
-
         if (currentFilter === "interview-list-btn") {
             renderInterview();
 
@@ -116,6 +112,32 @@ document.addEventListener("click", function (event) {
 
             document.getElementById("job-number").innerText = rejectList.length;
         }
+    }
+
+    if (event.target.closest(".delete-btn")) {
+        const card = event.target.closest(".card");
+        const companyTitle = card.querySelector(".company-title").innerText;
+
+        interViewList = interViewList.filter(
+            (item) => item.companyTitle !== companyTitle,
+        );
+
+        rejectList = rejectList.filter(
+            (item) => item.companyTitle !== companyTitle,
+        );
+
+        card.remove();
+        totalCards--;
+
+        if (totalCards === 0) {
+            filteredCardSection.classList.add("hidden");
+            document
+                .querySelector("#job-card-container")
+                .classList.add("hidden");
+            document.getElementById("empty-list").classList.remove("hidden");
+        }
+
+        document.getElementById("job-number").innerText = totalCards;
     }
 
     updateCounts();
