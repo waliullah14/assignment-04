@@ -1,83 +1,38 @@
-## Welcome To ( সহজ সরল সিম্পল ) Assignment - 4 
-
-
----
-# 📅 Deadline For 60 marks: 23th February, 2026 (11:59 pm ⏱️)
-# 📅 Deadline For 50 marks: 24th February, 2026 (11:59 pm ⏱️)
-# 📅 Deadline For 30 marks: Any time after 24th February.
-
-
-# Main Requirements
-
-## Design Part
-
-## Dashboard
-- Website name and Create a dashboard like figma 
-- The section should be responsive for mobile devices. It is totally up to you. 
-
-## Available Jobs Section
-- A title on the left side, jobs count on the right side 
-- 3 different tab  below the section title 
-- Minimum 8 cards with:
-	- companyName
-	- position
-	- location
-	- type
-	- salary
-	- description
-	- 2 buttons: Interview, Rejected
-- By default all the jobs data will show on All tab, and the Interview, Rejected tab will show “No jobs Available” message with a subtitle below and an icon/image on the above
-
-- The section should be responsive for mobile devices. It is totally up to you.
-
---- 
-
-## Functionalities Part
-- Clicking on Interview button on the card 
-    - will add the data on Interview tab 
-    - add the status as Interview.
-    - Will increase the the count of interview in Dashboard 
-
-- Clicking on Rejected button on the card 
-    - will add the data on Rejected tab 
-    - add the status as Rejected.
-    - Will increase the the count of Rejected in Dashboard
-
-- Enable toggle between Interview and rejected button(you can select Rejected button after clicking on Interview, and Interview button after clicking on Rejected button). It will change the tab and dashboard count also. It will show tab wise jobs count on the right.
-
----
-
-# Challenges Requirements
-- Clicking on the delete button will remove that card from the UI, and the count will be deducted from the dashboard card and the main section.
-- No lorem ipsum text on your website. At least 8 meaningful commits in your project.  
-
-- Create a readme file and answer this question on your own. Don’t copy-paste from Google or any AI chatbot. 
-
-
 ## Answers to Questions
 
 ### 1. What is the difference between getElementById, getElementsByClassName, and querySelector / querySelectorAll?
 
+<p>
+getElementById is used to obtain only one specific element of the document.<br>
+getElementsByClassName is used to obtain all the elements of an document having the same class. it returns a html collection.<br>
+querySelector is used to obtain a particular element using css selector. after getting an element it stops further searching<br>
+querySelectorAll is used to obtain all the elements that matches the given css selector. it returns a nodelist.
+</p>
+
 ### 2. How do you create and insert a new element into the DOM?
+
+<p>
+For creating we use document.createElement() and pass the desired tagname within '' as an argument.<br>
+Then we add innerHTML to the neewly creater element. Then we append the element to the parent node this way:
+parentNode.appendNode(childNode)
+</p>
 
 ### 3. What is Event Bubbling? And how does it work?
 
+<p>
+Bubbling is the process where when a child node is triggired then the parentNodes get triggered gradually. When we click a button inside a div then the button is triggered first and then the parent div is triggered. this continues until the full document is obtained.
+</p>
+
 ### 4. What is Event Delegation in JavaScript? Why is it useful?
+
+<p>
+Event Delegation means to add event listener in a parent to use that event listener for all the children of that parent. It is useful because it saves memory as the single event listener can work for all the children. thus this can improve the code performance and reduce code length.
+</p>
 
 ### 5. What is the difference between preventDefault() and stopPropagation() methods?
 
+<p>
+preventDefault() method is used to stop any default behavior of the browser. on the other hand stopPropagation() is used to stop the bubbling process to stop triggering of parent elements.
+</p>
+
 ---
-
-
-**Technology Stack:**
-- HTML
-- CSS (Vanilla/Tailwind/DaisyUI)
-- JavaScript (Vanilla)
-
-
---- 
-
-## What to submit: 
-
-1. GitHub Repository Link: 
-2. Live Site Link: 
